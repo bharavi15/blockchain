@@ -3,18 +3,15 @@ package com.bharavi.Blockchain;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.text.AbstractDocument.BranchElement;
-
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 
 import com.bharavi.Blockchain.beans.Block;
 import com.bharavi.Blockchain.beans.Transaction;
+import com.bharavi.Blockchain.utils.Constants;
+import com.bharavi.Blockchain.utils.Utils;
 
 @SpringBootApplication
 public class App 
@@ -30,20 +27,35 @@ public class App
     	String ch = "";
     	List<Block> blocks = new LinkedList<Block>();
 		Block block = new Block();
+		blocks.add(block);
+		boolean isFirstBlock = true;
+		System.out.println("Genesis block created");
+		System.out.println(Utils.getSha256("abcd"));
     	do {
-		System.out.println();
 		Transaction t = new Transaction();
+//		System.out.print("Enter debit account:");
+//		t.setDebitAccount(br.readLine());
+//		System.out.print("Enter credit account:");
+//		t.setCreditAccount(br.readLine());
+//		System.out.print("Enter amount:");
+//		t.setAmount(Double.parseDouble(br.readLine()));
 		System.out.print("Enter debit account:");
-		t.setDebitAccount(br.readLine());
+		t.setDebitAccount("asdf");
 		System.out.print("Enter credit account:");
-		t.setCreditAccount(br.readLine());
+		t.setCreditAccount("asdfg");
 		System.out.print("Enter amount:");
-		t.setAmount(Double.parseDouble(br.readLine()));
+		t.setAmount(String.valueOf(100));
 		block.getTransactions().add(t);
-		if(block.getTransactions().size()>=2) {			
-			blocks.add(block);
+		
+		if(block.getTransactions().size()>= Constants.MAX_TXN_PER_BLOCK) {	
+			if(!isFirstBlock)
+				blocks.add(block);
+			isFirstBlock = false;
+			String blockHashString = Utils.getSha256(block.toString());
 			block = new Block();
+			block.setHashPointer(blockHashString);
 		}
+		
     	System.out.print("Any more transactions?");
     	ch = br.readLine();
 		} while (!"".equals(ch));

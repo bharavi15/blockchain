@@ -1,18 +1,19 @@
 package com.bharavi.Blockchain.beans;
 
 public class Transaction {
+	
 	String txnId;
 	String timestamp;
 	String debitAccount;
 	String creditAccount;
 	String digitalSignature;
-	double amount;
+	String amount;
 	
-	public double getAmount() {
+	public String getAmount() {
 		return amount;
 	}
 
-	public void setAmount(double amount) {
+	public void setAmount(String amount) {
 		this.amount = amount;
 	}
 
