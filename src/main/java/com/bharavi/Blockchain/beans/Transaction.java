@@ -1,19 +1,28 @@
 package com.bharavi.Blockchain.beans;
 
+import java.util.UUID;
+
+import com.bharavi.Blockchain.utils.Utils;
+
 public class Transaction {
 	
 	String txnId;
-	String timestamp;
+	long timestamp;
 	String debitAccount;
 	String creditAccount;
 	String digitalSignature;
-	String amount;
+	double amount;
+	String txnHash;
 	
-	public String getAmount() {
+	public Transaction() {
+		txnId = UUID.randomUUID().toString();
+		timestamp = System.currentTimeMillis();
+	}
+	public double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(String amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 
@@ -25,11 +34,11 @@ public class Transaction {
 		this.txnId = txnId;
 	}
 
-	public String getTimestamp() {
+	public long getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(String timestamp) {
+	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
 	}
 
@@ -57,10 +66,17 @@ public class Transaction {
 		this.digitalSignature = digitalSignature;
 	}
 
+	public String getTxnHash() {
+		return txnHash;
+	}
+	public void setTxnHash() {
+		this.txnHash = Utils.getSha256(txnId+timestamp+debitAccount+creditAccount+amount);
+	}
 	@Override
 	public String toString() {
 		return "Transaction [txnId=" + txnId + ", timestamp=" + timestamp + ", debitAccount=" + debitAccount
 				+ ", creditAccount=" + creditAccount + ", digitalSignature=" + digitalSignature + ", amount=" + amount
+				+ ", txnHash=" + txnHash
 				+ "]";
 	}
 	
